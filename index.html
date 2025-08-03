@@ -1,75 +1,116 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Strategic Insight Presentation</title>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      margin: 0;
-      background-color: #f8f9fa;
-    }
-    header {
-      background: linear-gradient(to right, #0d6efd, #00b4d8);
-      color: white;
-      padding: 25px;
-      text-align: center;
-    }
-    nav {
-      background-color: #dee2e6;
-      display: flex;
-      justify-content: center;
-      padding: 12px 0;
-    }
-    nav button {
-      background-color: #ffffff;
-      border: 1px solid #ccc;
-      padding: 10px 20px;
-      margin: 0 8px;
-      font-size: 16px;
-      cursor: pointer;
-      border-radius: 8px;
-      transition: all 0.3s;
-    }
-    nav button.active {
-      background-color: #0d6efd;
-      color: white;
-      font-weight: bold;
-      border: none;
-    }
-    .page {
-      display: none;
-      padding: 40px 30px;
-    }
-    .page.active {
-      display: block;
-    }
-    .chart-container, .table-container, .insight-box {
-      margin: 30px auto;
-      max-width: 980px;
-      background: white;
-      padding: 25px;
-      border-radius: 12px;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.08);
-    }
-    h2, h3 { text-align: center; }
-    ul { padding-left: 20px; }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 15px;
-    }
-    th, td {
-      border: 1px solid #ced4da;
-      padding: 10px;
-      text-align: left;
-    }
-    th {
-      background-color: #f1f3f5;
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Strategic Insight Presentation</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+  body {
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    background-color: #f8f9fa;
+  }
+  header {
+    background: linear-gradient(to right, #0d6efd, #00b4d8);
+    color: white;
+    padding: 25px;
+    text-align: center;
+  }
+  nav {
+    background-color: #dee2e6;
+    display: flex;
+    justify-content: center;
+    padding: 12px 0;
+  }
+  nav button {
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    padding: 10px 20px;
+    margin: 0 8px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.3s;
+  }
+  nav button.active {
+    background-color: #0d6efd;
+    color: white;
+    font-weight: bold;
+    border: none;
+  }
+  .page {
+    display: none;
+    padding: 40px 30px;
+  }
+  .page.active {
+    display: block;
+  }
+  .chart-container, .table-container, .insight-box {
+    margin: 30px auto;
+    max-width: 980px;
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+  }
+  h2, h3 {
+    text-align: center;
+  }
+  ul {
+    padding-left: 20px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  th, td {
+    border: 1px solid #ced4da;
+    padding: 12px 15px;
+    text-align: left;
+  }
+  th {
+    background-color: #f1f3f5;
+    font-weight: 600;
+  }
+  tr:nth-child(even) {
+    background-color: #fafafa;
+  }
+  tr:hover {
+    background-color: #e9f5ff;
+  }
+
+  /* Pill badge สำหรับ Status */
+  .status-pill {
+    display: inline-block;
+    padding: 6px 16px;
+    border-radius: 9999px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-align: center;
+    min-width: 110px;
+    color: white;
+  }
+  .status-highrisk {
+    background-color: #dc3545; /* แดง */
+  }
+  .status-mediumrisk {
+    background-color: #ffc107; /* เหลือง */
+    color: #212529; /* ตัวหนังสือเข้ม */
+  }
+  .status-lowrisk {
+    background-color: #198754; /* เขียว */
+  }
+
+  /* สไตล์คำแนะนำ */
+  .recommend {
+    font-style: italic;
+    color: #0d6efd;
+  }
+</style>
 </head>
 <body>
 
@@ -88,6 +129,15 @@
 <section id="page1" class="page active">
   <h2>📘 Strategic Inventory Dashboard</h2>
 
+  <div class="insight-box">
+    <h3>💡 Strategic Insight</h3>
+    <ul>
+      <li>SKU A-E contribute 80%+ of total inventory value → prioritize review</li>
+      <li>DOH above 30 days in some SKUs → risk of aging stock</li>
+      <li>Slow-moving products flagged via FSN → align with sales forecast</li>
+    </ul>
+  </div>
+
   <div class="chart-container">
     <h3>Top 10 Inventory Value</h3>
     <canvas id="inventoryValueChart"></canvas>
@@ -100,20 +150,38 @@
     <h3>DOH Trend (Days on Hand)</h3>
     <canvas id="dohTrendChart"></canvas>
   </div>
-  <div class="insight-box">
-    <h3>💡 Strategic Insight</h3>
-    <ul>
-      <li>SKU A-E contribute 80%+ of total inventory value → prioritize review</li>
-      <li>DOH above 30 days in some SKUs → risk of aging stock</li>
-      <li>Slow-moving products flagged via FSN → align with sales forecast</li>
-    </ul>
-  </div>
+
   <div class="table-container">
     <h3>🛠 Action Plan</h3>
     <table>
-      <tr><th>Action</th><th>Details</th><th>Due Date</th><th>Owner</th></tr>
-      <tr><td>Review Top SKU A-E</td><td>Cross-check forecast & production</td><td>15 Aug</td><td>Planner</td></tr>
-      <tr><td>Implement DOH Alert</td><td>Auto-alert if DOH > 30</td><td>20 Aug</td><td>Data Team</td></tr>
+      <thead>
+        <tr>
+          <th>Action</th>
+          <th>Details</th>
+          <th>Due Date</th>
+          <th>Owner</th>
+          <th>Status (Risk Level)</th>
+          <th>Action Plan Recommend</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Review Top SKU A-E</td>
+          <td>Cross-check forecast & production</td>
+          <td>15 Aug</td>
+          <td>Planner</td>
+          <td><span class="status-pill status-highrisk">High Risk / Urgent</span></td>
+          <td class="recommend">Immediate action required before next cycle</td>
+        </tr>
+        <tr>
+          <td>Implement DOH Alert</td>
+          <td>Auto-alert if DOH &gt; 30</td>
+          <td>20 Aug</td>
+          <td>Data Team</td>
+          <td><span class="status-pill status-lowrisk">Low Risk / Monitor</span></td>
+          <td class="recommend">Monitor system performance</td>
+        </tr>
+      </tbody>
     </table>
   </div>
 </section>
@@ -121,6 +189,15 @@
 <!-- Page 2 -->
 <section id="page2" class="page">
   <h2>📙 Inventory Risk & Opportunity Dashboard</h2>
+
+  <div class="insight-box">
+    <h3>💡 Strategic Insight</h3>
+    <ul>
+      <li>Top 10 SKUs account for over 5M THB in holding cost</li>
+      <li>WH3 has high C-category SKU ratio → Dead stock potential</li>
+      <li>30% of capital stock lacks defined action</li>
+    </ul>
+  </div>
 
   <div class="chart-container">
     <h3>Top 10 Inventory Cost</h3>
@@ -134,20 +211,38 @@
     <h3>Strategic Action vs Stock Capital</h3>
     <canvas id="actionVsCapitalChart"></canvas>
   </div>
-  <div class="insight-box">
-    <h3>💡 Strategic Insight</h3>
-    <ul>
-      <li>Top 10 SKUs account for over 5M THB in holding cost</li>
-      <li>WH3 has high C-category SKU ratio → Dead stock potential</li>
-      <li>30% of capital stock lacks defined action</li>
-    </ul>
-  </div>
+
   <div class="table-container">
     <h3>🛠 Action Plan</h3>
     <table>
-      <tr><th>Action</th><th>Details</th><th>Due Date</th><th>Owner</th></tr>
-      <tr><td>Create Aging Zone in WH3</td><td>Segregate slow SKUs</td><td>18 Aug</td><td>WH Lead</td></tr>
-      <tr><td>Set Action Flag for >500K Capital</td><td>Force Action Required</td><td>22 Aug</td><td>SCM</td></tr>
+      <thead>
+        <tr>
+          <th>Action</th>
+          <th>Details</th>
+          <th>Due Date</th>
+          <th>Owner</th>
+          <th>Status (Risk Level)</th>
+          <th>Action Plan Recommend</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Create Aging Zone in WH3</td>
+          <td>Segregate slow SKUs</td>
+          <td>18 Aug</td>
+          <td>WH Lead</td>
+          <td><span class="status-pill status-mediumrisk">Medium Risk</span></td>
+          <td class="recommend">Allocate resources soon</td>
+        </tr>
+        <tr>
+          <td>Set Action Flag for &gt;500K Capital</td>
+          <td>Force Action Required</td>
+          <td>22 Aug</td>
+          <td>SCM</td>
+          <td><span class="status-pill status-highrisk">High Risk / Urgent</span></td>
+          <td class="recommend">Prioritize high capital SKUs</td>
+        </tr>
+      </tbody>
     </table>
   </div>
 </section>
@@ -155,6 +250,15 @@
 <!-- Page 3 -->
 <section id="page3" class="page">
   <h2>📗 CMW Work Orders Dashboard</h2>
+
+  <div class="insight-box">
+    <h3>💡 Strategic Insight</h3>
+    <ul>
+      <li>WO production lags by 10–15% daily → verify bottlenecks</li>
+      <li>Admixtures dominate with 65% production share</li>
+      <li>Average daily delivery 130 units → plan RM accordingly</li>
+    </ul>
+  </div>
 
   <div class="chart-container">
     <h3>WO Scheduled vs Produced</h3>
@@ -168,20 +272,38 @@
     <h3>Delivery Date Trend</h3>
     <canvas id="deliveryTrendChart"></canvas>
   </div>
-  <div class="insight-box">
-    <h3>💡 Strategic Insight</h3>
-    <ul>
-      <li>WO production lags by 10–15% daily → verify bottlenecks</li>
-      <li>Admixtures dominate with 65% production share</li>
-      <li>Average daily delivery 130 units → plan RM accordingly</li>
-    </ul>
-  </div>
+
   <div class="table-container">
     <h3>🛠 Action Plan</h3>
     <table>
-      <tr><th>Action</th><th>Details</th><th>Due Date</th><th>Owner</th></tr>
-      <tr><td>Increase RM Buffer for Admixtures</td><td>+10% raw material</td><td>10 Aug</td><td>Procurement</td></tr>
-      <tr><td>Auto-alert for WO < 90%</td><td>Power Automate Trigger</td><td>14 Aug</td><td>Data Team</td></tr>
+      <thead>
+        <tr>
+          <th>Action</th>
+          <th>Details</th>
+          <th>Due Date</th>
+          <th>Owner</th>
+          <th>Status (Risk Level)</th>
+          <th>Action Plan Recommend</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Increase RM Buffer for Admixtures</td>
+          <td>+10% raw material</td>
+          <td>10 Aug</td>
+          <td>Procurement</td>
+          <td><span class="status-pill status-mediumrisk">Medium Risk</span></td>
+          <td class="recommend">Prevent supply disruption</td>
+        </tr>
+        <tr>
+          <td>Auto-alert for WO &lt; 90%</td>
+          <td>Power Automate Trigger</td>
+          <td>14 Aug</td>
+          <td>Data Team</td>
+          <td><span class="status-pill status-lowrisk">Low Risk / Monitor</span></td>
+          <td class="recommend">Ensure timely follow-up</td>
+        </tr>
+      </tbody>
     </table>
   </div>
 </section>
@@ -196,6 +318,7 @@ function showPage(pageNumber) {
   });
 }
 
+// Chart.js initialization
 new Chart("inventoryValueChart", {
   type: 'bar',
   data: {

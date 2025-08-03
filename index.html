@@ -1,396 +1,479 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Strategic Insight Presentation</title>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<style>
-  body {
-    font-family: 'Segoe UI', sans-serif;
-    margin: 0;
-    background-color: #f8f9fa;
-  }
-  header {
-    background: linear-gradient(to right, #0d6efd, #00b4d8);
-    color: white;
-    padding: 25px;
-    text-align: center;
-  }
-  nav {
-    background-color: #dee2e6;
-    display: flex;
-    justify-content: center;
-    padding: 12px 0;
-  }
-  nav button {
-    background-color: #ffffff;
-    border: 1px solid #ccc;
-    padding: 10px 20px;
-    margin: 0 8px;
-    font-size: 16px;
-    cursor: pointer;
-    border-radius: 8px;
-    transition: all 0.3s;
-  }
-  nav button.active {
-    background-color: #0d6efd;
-    color: white;
-    font-weight: bold;
-    border: none;
-  }
-  .page {
-    display: none;
-    padding: 40px 30px;
-  }
-  .page.active {
-    display: block;
-  }
-  .chart-container, .table-container, .insight-box {
-    margin: 30px auto;
-    max-width: 980px;
-    background: white;
-    padding: 25px;
-    border-radius: 12px;
-    box-shadow: 0 4px 14px rgba(0,0,0,0.08);
-  }
-  h2, h3 {
-    text-align: center;
-  }
-  ul {
-    padding-left: 20px;
-  }
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 15px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  }
-  th, td {
-    border: 1px solid #ced4da;
-    padding: 12px 15px;
-    text-align: left;
-  }
-  th {
-    background-color: #f1f3f5;
-    font-weight: 600;
-  }
-  tr:nth-child(even) {
-    background-color: #fafafa;
-  }
-  tr:hover {
-    background-color: #e9f5ff;
-  }
+  <meta charset="utf-8">
+  <title>📊 Strategic Insight Presentation</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  /* Pill badge สำหรับ Status */
-  .status-pill {
-    display: inline-block;
-    padding: 6px 16px;
-    border-radius: 9999px;
-    font-weight: 700;
-    font-size: 0.9rem;
-    text-align: center;
-    min-width: 110px;
-    color: white;
-  }
-  .status-highrisk {
-    background-color: #dc3545; /* แดง */
-  }
-  .status-mediumrisk {
-    background-color: #ffc107; /* เหลือง */
-    color: #212529; /* ตัวหนังสือเข้ม */
-  }
-  .status-lowrisk {
-    background-color: #198754; /* เขียว */
-  }
+  <!-- Reveal.js CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/theme/black.css" id="theme-link">
 
-  /* สไตล์คำแนะนำ */
-  .recommend {
-    font-style: italic;
-    color: #0d6efd;
-  }
-</style>
+  <style>
+    /* --- Base Dark Theme --- */
+    body {
+      background-color: #121212;
+      color: #eee;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0; padding: 0;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    h1, h2 {
+      text-align: center;
+      color: #00b4b4;
+      text-shadow: 0 0 8px #00b4b4aa;
+      font-weight: 700;
+      margin-bottom: 15px;
+    }
+    p {
+      text-align: center;
+      color: #aaa;
+      font-style: italic;
+      margin-bottom: 40px;
+    }
+    .nav-bar {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .nav-bar button {
+      margin: 0 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 25px;
+      border: none;
+      background-color: #444;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .nav-bar button:hover, .nav-bar button:focus {
+      background-color: #008080;
+      outline: none;
+    }
+    .chart-container {
+      width: 500px;
+      margin: 20px auto 40px auto;
+    }
+    table {
+      width: 90%;
+      margin: 0 auto 40px auto;
+      border-collapse: collapse;
+      font-size: 16px;
+      box-shadow: 0 4px 12px rgb(0 0 0 / 0.4);
+      border-radius: 10px;
+      overflow: hidden;
+      background-color: #1c1c1c;
+      color: #eee;
+    }
+    table, th, td {
+      border: 1px solid #555;
+    }
+    th, td {
+      padding: 12px 15px;
+      text-align: center;
+    }
+    th {
+      background-color: #222;
+      color: #00b4b4;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+    tbody tr:nth-child(even) {
+      background-color: #2e2e2e;
+    }
+    tbody tr:nth-child(odd) {
+      background-color: #222;
+    }
+    .status-high {
+      background-color: #ff4d4d;
+      color: #fff;
+      font-weight: 600;
+      border-radius: 50px;
+      padding: 6px 14px;
+      display: inline-block;
+      min-width: 90px;
+      box-shadow: 0 0 8px #ff4d4daa;
+    }
+    .status-medium {
+      background-color: #ffdb4d;
+      color: #333;
+      font-weight: 600;
+      border-radius: 50px;
+      padding: 6px 14px;
+      display: inline-block;
+      min-width: 90px;
+      box-shadow: 0 0 8px #ffdb4daa;
+    }
+    .status-low {
+      background-color: #4dff88;
+      color: #222;
+      font-weight: 600;
+      border-radius: 50px;
+      padding: 6px 14px;
+      display: inline-block;
+      min-width: 90px;
+      box-shadow: 0 0 8px #4dff88aa;
+    }
+    .insight-box {
+      background-color: #222;
+      padding: 20px 30px;
+      border-radius: 20px;
+      color: #fff;
+      margin-bottom: 30px;
+      font-size: 18px;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+      box-shadow: 0 0 20px #008080cc;
+      line-height: 1.5;
+    }
+
+    /* --- Light Theme --- */
+    body.light {
+      background-color: #fefefe;
+      color: #222;
+    }
+    body.light p {
+      color: #555;
+    }
+    body.light table {
+      background-color: #fff;
+      color: #222;
+      box-shadow: 0 4px 12px rgb(0 0 0 / 0.15);
+    }
+    body.light table, body.light th, body.light td {
+      border-color: #bbb;
+    }
+    body.light th {
+      background-color: #00b4b4;
+      color: #fff;
+      text-shadow: none;
+    }
+    body.light tbody tr:nth-child(even) {
+      background-color: #f5f9fa;
+    }
+    body.light tbody tr:nth-child(odd) {
+      background-color: #e3eef1;
+    }
+    body.light .nav-bar button {
+      background-color: #00b4b4;
+      color: #fff;
+      box-shadow: 0 0 8px #00b4b4aa;
+    }
+    body.light .nav-bar button:hover, 
+    body.light .nav-bar button:focus {
+      background-color: #007373;
+      outline: none;
+    }
+    body.light .insight-box {
+      background-color: #e3eef1;
+      color: #222;
+      box-shadow: 0 0 20px #00b4b4aa;
+    }
+    body.light .status-high {
+      background-color: #ff6b6b;
+      color: #fff;
+      box-shadow: 0 0 10px #ff6b6baa;
+    }
+    body.light .status-medium {
+      background-color: #ffe066;
+      color: #444;
+      box-shadow: 0 0 10px #ffe066aa;
+    }
+    body.light .status-low {
+      background-color: #51cf66;
+      color: #fff;
+      box-shadow: 0 0 10px #51cf66aa;
+    }
+
+    /* Theme toggle button */
+    #theme-toggle {
+      position: fixed;
+      top: 15px;
+      right: 20px;
+      background: #00b4b4;
+      color: #fff;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 25px;
+      cursor: pointer;
+      font-size: 18px;
+      box-shadow: 0 0 15px #00b4b4cc;
+      z-index: 9999;
+      transition: background-color 0.3s ease;
+      user-select: none;
+    }
+    #theme-toggle:hover {
+      background-color: #007373;
+    }
+  </style>
 </head>
 <body>
+  <button id="theme-toggle" aria-label="Toggle light and dark theme">🌞</button>
 
-<header>
-  <h1>📊 Strategic Insight Presentation</h1>
-  <p>Interactive Dashboard Summary for Decision-Makers</p>
-</header>
+  <div class="reveal">
+    <div class="slides">
 
-<nav>
-  <button class="nav-btn active" onclick="showPage(1)">📈 Strategic</button>
-  <button class="nav-btn" onclick="showPage(2)">📉 Risk & Opportunity</button>
-  <button class="nav-btn" onclick="showPage(3)">🏭 CMW Operations</button>
-</nav>
+      <!-- Navigation Slide -->
+      <section>
+        <div class="nav-bar" role="navigation" aria-label="Presentation Navigation">
+          <button onclick="Reveal.slide(1)">📈 Strategic</button>
+          <button onclick="Reveal.slide(2)">📉 Risk & Opportunity</button>
+          <button onclick="Reveal.slide(3)">🏭 CFC Operations</button>
+        </div>
+        <h1>📊 Strategic Insight Presentation</h1>
+        <p>Interactive Dashboard Summary for Decision-Makers</p>
+      </section>
 
-<!-- Page 1 -->
-<section id="page1" class="page active">
-  <h2>📘 Strategic Inventory Dashboard</h2>
+      <!-- Slide 1: Strategic -->
+      <section>
+        <h2>📈 Strategic</h2>
+        <div class="insight-box" aria-label="Strategic Insight">
+          กลยุทธ์หลักในช่วงไตรมาสนี้คือการลดทุนจมในสินค้าคงคลัง โดยเน้น ABC-FSN-DOI Analysis<br>
+          ✅ จุดเน้น: กลุ่ม A-Fast ที่มี DOI เพิ่มขึ้นผิดปกติ
+        </div>
+        <div class="chart-container">
+          <canvas id="chart1" aria-label="DOI chart for items" role="img"></canvas>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>DOI</th>
+              <th>Category</th>
+              <th>Recommendation</th>
+              <th>Recommend กลยุทธ์</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>RM-103</td>
+              <td>120</td>
+              <td>A-Fast</td>
+              <td>เร่งขายและไม่เติมเพิ่ม</td>
+              <td>ปรับลดปริมาณสต็อกและส่งเสริมการขายเร่งด่วน</td>
+              <td><span class="status-high" aria-label="High risk status">⚠️ High Risk</span></td>
+            </tr>
+            <tr>
+              <td>RM-088</td>
+              <td>35</td>
+              <td>B-Slow</td>
+              <td>พิจารณาปรับ reorder point</td>
+              <td>วางแผนจัดซื้อแบบ Just-in-Time</td>
+              <td><span class="status-medium" aria-label="Moderate risk status">Moderate</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
 
-  <div class="insight-box">
-    <h3>💡 Strategic Insight</h3>
-    <ul>
-      <li>SKU A-E contribute 80%+ of total inventory value → prioritize review</li>
-      <li>DOH above 30 days in some SKUs → risk of aging stock</li>
-      <li>Slow-moving products flagged via FSN → align with sales forecast</li>
-    </ul>
+      <!-- Slide 2: Risk & Opportunity -->
+      <section>
+        <h2>📉 Risk & Opportunity</h2>
+        <div class="insight-box" aria-label="Risk and Opportunity Insight">
+          รายการที่มี Turnover ต่ำกว่า 1 รอบ/ปี แต่มี Stock สูง → ถือเป็นทุนจมเสี่ยงสูง<br>
+          🎯 โอกาส: Convert ไปยังสินค้าทดแทนหรือแผนโปรโมชั่น
+        </div>
+        <div class="chart-container">
+          <canvas id="chart2" aria-label="Turnover chart for items" role="img"></canvas>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Turnover</th>
+              <th>ABC</th>
+              <th>Action Plan</th>
+              <th>Recommend กลยุทธ์</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>FG-456</td>
+              <td>0.6</td>
+              <td>C</td>
+              <td>ลดการผลิตและจัดโปรโมชั่น</td>
+              <td>ส่งเสริมโปรโมชันลดสต็อกและพัฒนาสินค้าทดแทน</td>
+              <td><span class="status-high" aria-label="Critical status">🚨 Critical</span></td>
+            </tr>
+            <tr>
+              <td>FG-789</td>
+              <td>1.1</td>
+              <td>B</td>
+              <td>เฝ้าระวังการเคลื่อนไหวตลาด</td>
+              <td>ติดตามเทรนด์ตลาดและปรับกลยุทธ์ตามสถานการณ์</td>
+              <td><span class="status-low" aria-label="Stable status">Stable</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- Slide 3: CFC Operations -->
+      <section>
+        <h2>🏭 CFC Operations</h2>
+        <div class="insight-box" aria-label="Operations Insight">
+          วิเคราะห์ Productivity ต่อวัน และต้นทุนต่อ Batch ชัดเจนขึ้น<br>
+          🧩 Insight: ค่าเฉลี่ยต้นทุนต่อ Batch ลดลงในเดือน ก.ค. ถึง 18%
+        </div>
+        <div class="chart-container">
+          <canvas id="chart3" aria-label="Batch cost and yield chart" role="img"></canvas>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Batch</th>
+              <th>Cost</th>
+              <th>Yield</th>
+              <th>Recommend กลยุทธ์</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>2025-07-12</td>
+              <td>BT-334</td>
+              <td>15,200</td>
+              <td>91%</td>
+              <td>เพิ่มประสิทธิภาพสายการผลิตและควบคุมคุณภาพ</td>
+              <td><span class="status-low" aria-label="Efficient status">✅ Efficient</span></td>
+            </tr>
+            <tr>
+              <td>2025-07-14</td>
+              <td>BT-338</td>
+              <td>19,800</td>
+              <td>85%</td>
+              <td>วิเคราะห์สาเหตุต้นทุนสูงและปรับปรุงกระบวนการ</td>
+              <td><span class="status-medium" aria-label="Monitor status">Monitor</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+    </div>
   </div>
 
-  <div class="chart-container">
-    <h3>Top 10 Inventory Value</h3>
-    <canvas id="inventoryValueChart"></canvas>
-  </div>
-  <div class="chart-container">
-    <h3>ABC Category Distribution</h3>
-    <canvas id="abcCategoryChart"></canvas>
-  </div>
-  <div class="chart-container">
-    <h3>DOH Trend (Days on Hand)</h3>
-    <canvas id="dohTrendChart"></canvas>
-  </div>
+  <!-- Reveal.js -->
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.min.js"></script>
+  <script>
+    Reveal.initialize({
+      hash: true,
+      slideNumber: true,
+      navigationMode: 'linear'
+    });
+  </script>
 
-  <div class="table-container">
-    <h3>🛠 Action Plan</h3>
-    <table>
-      <thead>
-        <tr>
-          <th>Action</th>
-          <th>Details</th>
-          <th>Due Date</th>
-          <th>Owner</th>
-          <th>Status (Risk Level)</th>
-          <th>Action Plan Recommend</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Review Top SKU A-E</td>
-          <td>Cross-check forecast & production</td>
-          <td>15 Aug</td>
-          <td>Planner</td>
-          <td><span class="status-pill status-highrisk">High Risk / Urgent</span></td>
-          <td class="recommend">Immediate action required before next cycle</td>
-        </tr>
-        <tr>
-          <td>Implement DOH Alert</td>
-          <td>Auto-alert if DOH &gt; 30</td>
-          <td>20 Aug</td>
-          <td>Data Team</td>
-          <td><span class="status-pill status-lowrisk">Low Risk / Monitor</span></td>
-          <td class="recommend">Monitor system performance</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</section>
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    const chartData1 = {
+      type: 'bar',
+      data: {
+        labels: ['RM-103', 'RM-088'],
+        datasets: [{
+          label: 'DOI',
+          data: [120, 35],
+          backgroundColor: ['#ff4d4d', '#ffdb4d']
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { display: false } },
+        scales: {
+          y: { beginAtZero: true, title: { display: true, text: 'Days' } }
+        }
+      }
+    };
 
-<!-- Page 2 -->
-<section id="page2" class="page">
-  <h2>📙 Inventory Risk & Opportunity Dashboard</h2>
+    const chartData2 = {
+      type: 'bar',
+      data: {
+        labels: ['FG-456', 'FG-789'],
+        datasets: [{
+          label: 'Turnover',
+          data: [0.6, 1.1],
+          backgroundColor: ['#ff4d4d', '#4dff88']
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { display: false } },
+        scales: {
+          y: { beginAtZero: true, title: { display: true, text: 'Turnover (times/year)' } }
+        }
+      }
+    };
 
-  <div class="insight-box">
-    <h3>💡 Strategic Insight</h3>
-    <ul>
-      <li>Top 10 SKUs account for over 5M THB in holding cost</li>
-      <li>WH3 has high C-category SKU ratio → Dead stock potential</li>
-      <li>30% of capital stock lacks defined action</li>
-    </ul>
-  </div>
+    const chartData3 = {
+      type: 'bar',
+      data: {
+        labels: ['BT-334', 'BT-338'],
+        datasets: [
+          {
+            label: 'Cost (THB)',
+            data: [15200, 19800],
+            backgroundColor: '#00b4b4',
+            yAxisID: 'y1',
+          },
+          {
+            label: 'Yield (%)',
+            data: [91, 85],
+            type: 'line',
+            borderColor: '#ffdb4d',
+            backgroundColor: '#ffdb4d',
+            yAxisID: 'y2',
+            tension: 0.3,
+            fill: false,
+            pointRadius: 5,
+            pointHoverRadius: 7,
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { position: 'top' } },
+        scales: {
+          y1: {
+            type: 'linear',
+            position: 'left',
+            beginAtZero: true,
+            title: { display: true, text: 'Cost (THB)' },
+          },
+          y2: {
+            type: 'linear',
+            position: 'right',
+            beginAtZero: true,
+            max: 100,
+            title: { display: true, text: 'Yield (%)' },
+            grid: { drawOnChartArea: false },
+          }
+        }
+      }
+    };
 
-  <div class="chart-container">
-    <h3>Top 10 Inventory Cost</h3>
-    <canvas id="inventoryCostChart"></canvas>
-  </div>
-  <div class="chart-container">
-    <h3>ABC Classification by Warehouse</h3>
-    <canvas id="abcByWHChart"></canvas>
-  </div>
-  <div class="chart-container">
-    <h3>Strategic Action vs Stock Capital</h3>
-    <canvas id="actionVsCapitalChart"></canvas>
-  </div>
+    new Chart(document.getElementById('chart1'), chartData1);
+    new Chart(document.getElementById('chart2'), chartData2);
+    new Chart(document.getElementById('chart3'), chartData3);
 
-  <div class="table-container">
-    <h3>🛠 Action Plan</h3>
-    <table>
-      <thead>
-        <tr>
-          <th>Action</th>
-          <th>Details</th>
-          <th>Due Date</th>
-          <th>Owner</th>
-          <th>Status (Risk Level)</th>
-          <th>Action Plan Recommend</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Create Aging Zone in WH3</td>
-          <td>Segregate slow SKUs</td>
-          <td>18 Aug</td>
-          <td>WH Lead</td>
-          <td><span class="status-pill status-mediumrisk">Medium Risk</span></td>
-          <td class="recommend">Allocate resources soon</td>
-        </tr>
-        <tr>
-          <td>Set Action Flag for &gt;500K Capital</td>
-          <td>Force Action Required</td>
-          <td>22 Aug</td>
-          <td>SCM</td>
-          <td><span class="status-pill status-highrisk">High Risk / Urgent</span></td>
-          <td class="recommend">Prioritize high capital SKUs</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</section>
-
-<!-- Page 3 -->
-<section id="page3" class="page">
-  <h2>📗 CMW Work Orders Dashboard</h2>
-
-  <div class="insight-box">
-    <h3>💡 Strategic Insight</h3>
-    <ul>
-      <li>WO production lags by 10–15% daily → verify bottlenecks</li>
-      <li>Admixtures dominate with 65% production share</li>
-      <li>Average daily delivery 130 units → plan RM accordingly</li>
-    </ul>
-  </div>
-
-  <div class="chart-container">
-    <h3>WO Scheduled vs Produced</h3>
-    <canvas id="woCompareChart"></canvas>
-  </div>
-  <div class="chart-container">
-    <h3>Product Segment Share</h3>
-    <canvas id="productSegmentChart"></canvas>
-  </div>
-  <div class="chart-container">
-    <h3>Delivery Date Trend</h3>
-    <canvas id="deliveryTrendChart"></canvas>
-  </div>
-
-  <div class="table-container">
-    <h3>🛠 Action Plan</h3>
-    <table>
-      <thead>
-        <tr>
-          <th>Action</th>
-          <th>Details</th>
-          <th>Due Date</th>
-          <th>Owner</th>
-          <th>Status (Risk Level)</th>
-          <th>Action Plan Recommend</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Increase RM Buffer for Admixtures</td>
-          <td>+10% raw material</td>
-          <td>10 Aug</td>
-          <td>Procurement</td>
-          <td><span class="status-pill status-mediumrisk">Medium Risk</span></td>
-          <td class="recommend">Prevent supply disruption</td>
-        </tr>
-        <tr>
-          <td>Auto-alert for WO &lt; 90%</td>
-          <td>Power Automate Trigger</td>
-          <td>14 Aug</td>
-          <td>Data Team</td>
-          <td><span class="status-pill status-lowrisk">Low Risk / Monitor</span></td>
-          <td class="recommend">Ensure timely follow-up</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</section>
-
-<script>
-function showPage(pageNumber) {
-  document.querySelectorAll('.page').forEach((el, i) => {
-    el.classList.toggle('active', i === pageNumber - 1);
-  });
-  document.querySelectorAll('.nav-btn').forEach((el, i) => {
-    el.classList.toggle('active', i === pageNumber - 1);
-  });
-}
-
-// Chart.js initialization
-new Chart("inventoryValueChart", {
-  type: 'bar',
-  data: {
-    labels: ['SKU A','SKU B','SKU C','SKU D','SKU E'],
-    datasets: [{ label: 'Inventory Value (THB)', data: [120000,110000,95000,87000,85000], backgroundColor: '#0d6efd' }]
-  }
-});
-new Chart("abcCategoryChart", {
-  type: 'pie',
-  data: {
-    labels: ['A (80%)','B (15%)','C (5%)'],
-    datasets: [{ data: [80,15,5], backgroundColor: ['#007bff','#ffc107','#dc3545'] }]
-  }
-});
-new Chart("dohTrendChart", {
-  type: 'line',
-  data: {
-    labels: ['Mar','Apr','May','Jun','Jul'],
-    datasets: [{ label: 'DOH', data: [32, 35, 28, 30, 27], borderColor: '#00b4d8', fill: false, tension: 0.4 }]
-  }
-});
-new Chart("inventoryCostChart", {
-  type: 'bar',
-  data: {
-    labels: ['SKU X','SKU Y','SKU Z'],
-    datasets: [{ label: 'Inventory Cost', data: [200000,180000,150000], backgroundColor: '#dc3545' }]
-  }
-});
-new Chart("abcByWHChart", {
-  type: 'bar',
-  data: {
-    labels: ['WH1','WH2','WH3'],
-    datasets: [
-      { label: 'A', data: [60,50,40], backgroundColor: '#007bff' },
-      { label: 'B', data: [25,30,35], backgroundColor: '#ffc107' },
-      { label: 'C', data: [15,20,25], backgroundColor: '#dc3545' }
-    ]
-  },
-  options: { scales: { x: { stacked: true }, y: { stacked: true } } }
-});
-new Chart("actionVsCapitalChart", {
-  type: 'doughnut',
-  data: {
-    labels: ['Actioned','Not Actioned'],
-    datasets: [{ data: [70,30], backgroundColor: ['#198754','#6c757d'] }]
-  }
-});
-new Chart("woCompareChart", {
-  type: 'bar',
-  data: {
-    labels: ['WO1','WO2','WO3'],
-    datasets: [
-      { label: 'Scheduled', data: [20,25,30], backgroundColor: '#0d6efd' },
-      { label: 'Produced', data: [18,22,28], backgroundColor: '#20c997' }
-    ]
-  }
-});
-new Chart("productSegmentChart", {
-  type: 'pie',
-  data: {
-    labels: ['Admixtures','Resindur','Others'],
-    datasets: [{ data: [65,25,10], backgroundColor: ['#6f42c1','#fd7e14','#adb5bd'] }]
-  }
-});
-new Chart("deliveryTrendChart", {
-  type: 'line',
-  data: {
-    labels: ['Jul 14','Jul 15','Jul 16','Jul 17'],
-    datasets: [{ label: 'Deliveries', data: [100,120,140,130], borderColor: '#198754', tension: 0.4 }]
-  }
-});
-</script>
-
+    // Theme toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    themeToggle.addEventListener('click', () => {
+      const body = document.body;
+      if (body.classList.contains('light')) {
+        // Switch to dark
+        body.classList.remove('light');
+        document.getElementById('theme-link').href = 'https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/theme/black.css';
+        themeToggle.textContent = '🌞';
+        themeToggle.setAttribute('aria-label', 'Switch to light theme');
+      } else {
+        // Switch to light
+        body.classList.add('light');
+        document.getElementById('theme-link').href = 'https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/theme/white.css';
+        themeToggle.textContent = '🌙';
+        themeToggle.setAttribute('aria-label', 'Switch to dark theme');
+      }
+    });
+  </script>
 </body>
 </html>

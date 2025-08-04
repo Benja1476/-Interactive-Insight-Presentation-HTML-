@@ -214,20 +214,21 @@
   <div class="reveal">
     <div class="slides">
 
-      <!-- Navigation Slide -->
+      <!-- Navigation Slide (หน้าแรก “Selection”) -->
       <section>
         <div class="nav-bar" role="navigation" aria-label="Presentation Navigation">
-          <button onclick="Reveal.slide(1)">📈 Strategic</button>
-          <button onclick="Reveal.slide(2)">📉 Risk & Opportunity</button>
+          <button onclick="Reveal.slide(1)">📊 iStockView: Strategic Health</button>
+          <button onclick="Reveal.slide(2)">📉 iStockView: Risk & Opportunity</button>
           <button onclick="Reveal.slide(3)">🏭 CFC Operations</button>
+          <button onclick="Reveal.slide(4)">📈 Plan vs Reality: RM Impact</button>
         </div>
-        <h1>📊 Strategic Insight Presentation</h1>
-        <p>Interactive Dashboard Summary for Decision-Makers</p>
+        <h1>Selection</h1>
+        <p>Choose a slide to view detailed insights</p>
       </section>
 
-      <!-- Slide 1: Strategic -->
+      <!-- Slide 1: iStockView: Strategic Health -->
       <section>
-        <h2>📈 Strategic</h2>
+        <h2>📊 iStockView: Strategic Health</h2>
         <div class="insight-box" aria-label="Strategic Insight">
           กลยุทธ์หลักในช่วงไตรมาสนี้คือการลดทุนจมในสินค้าคงคลัง โดยเน้น ABC-FSN-DOI Analysis<br>
           ✅ จุดเน้น: กลุ่ม A-Fast ที่มี DOI เพิ่มขึ้นผิดปกติ
@@ -267,9 +268,9 @@
         </table>
       </section>
 
-      <!-- Slide 2: Risk & Opportunity -->
+      <!-- Slide 2: iStockView: Risk & Opportunity -->
       <section>
-        <h2>📉 Risk & Opportunity</h2>
+        <h2>📉 iStockView: Risk & Opportunity</h2>
         <div class="insight-box" aria-label="Risk and Opportunity Insight">
           รายการที่มี Turnover ต่ำกว่า 1 รอบ/ปี แต่มี Stock สูง → ถือเป็นทุนจมเสี่ยงสูง<br>
           🎯 โอกาส: Convert ไปยังสินค้าทดแทนหรือแผนโปรโมชั่น
@@ -351,6 +352,48 @@
         </table>
       </section>
 
+      <!-- Slide 4: Plan vs Reality: RM Impact -->
+      <section>
+        <h2>📈 Plan vs Reality: RM Impact</h2>
+        <div class="insight-box" aria-label="Plan vs Reality Insight">
+          สรุปผลความแตกต่างระหว่างแผนและผลจริงของวัตถุดิบ (RM)<br>
+          💡 แนะนำปรับปรุงการบริหารจัดการ RM เพื่อเพิ่มประสิทธิภาพ
+        </div>
+        <div class="chart-container">
+          <canvas id="chart4" aria-label="Plan vs Reality chart" role="img"></canvas>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>RM Item</th>
+              <th>Planned Qty</th>
+              <th>Actual Qty</th>
+              <th>Variance</th>
+              <th>Recommendation</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>RM-101</td>
+              <td>1000</td>
+              <td>850</td>
+              <td>-150</td>
+              <td>ตรวจสอบขั้นตอนรับเข้า</td>
+              <td><span class="status-medium" aria-label="Warning status">⚠️ Warning</span></td>
+            </tr>
+            <tr>
+              <td>RM-205</td>
+              <td>2000</td>
+              <td>2100</td>
+              <td>+100</td>
+              <td>ปรับปรุงการจัดเก็บสินค้า</td>
+              <td><span class="status-low" aria-label="Good status">✅ Good</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
     </div>
   </div>
 
@@ -367,6 +410,7 @@
   <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
+    // Chart 1: DOI
     const chartData1 = {
       type: 'bar',
       data: {
@@ -386,6 +430,7 @@
       }
     };
 
+    // Chart 2: Turnover
     const chartData2 = {
       type: 'bar',
       data: {
@@ -405,6 +450,7 @@
       }
     };
 
+    // Chart 3: Cost & Yield
     const chartData3 = {
       type: 'bar',
       data: {
@@ -438,14 +484,66 @@
             type: 'linear',
             position: 'left',
             beginAtZero: true,
-            title: { display: true, text: 'Cost (THB)' },
+            title: { display: true, text: 'Cost (THB)' }
           },
           y2: {
             type: 'linear',
             position: 'right',
-            beginAtZero: true,
-            max: 100,
+            beginAtZero: false,
             title: { display: true, text: 'Yield (%)' },
+            grid: { drawOnChartArea: false }
+          }
+        }
+      }
+    };
+
+    // Chart 4: Plan vs Reality
+    const chartData4 = {
+      type: 'bar',
+      data: {
+        labels: ['RM-101', 'RM-205'],
+        datasets: [
+          {
+            label: 'Planned Qty',
+            data: [1000, 2000],
+            backgroundColor: '#00b4b4',
+            yAxisID: 'y',
+          },
+          {
+            label: 'Actual Qty',
+            data: [850, 2100],
+            backgroundColor: '#ff4d4d',
+            yAxisID: 'y',
+          },
+          {
+            label: 'Variance',
+            data: [-150, 100],
+            type: 'line',
+            borderColor: '#ffdb4d',
+            backgroundColor: '#ffdb4d',
+            yAxisID: 'y2',
+            fill: false,
+            tension: 0.3,
+            pointRadius: 5,
+            pointHoverRadius: 7,
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { position: 'top' } },
+        scales: {
+          y: {
+            type: 'linear',
+            position: 'left',
+            beginAtZero: true,
+            title: { display: true, text: 'Quantity' },
+          },
+          y2: {
+            type: 'linear',
+            position: 'right',
+            beginAtZero: false,
+            title: { display: true, text: 'Variance' },
             grid: { drawOnChartArea: false },
           }
         }
@@ -455,23 +553,16 @@
     new Chart(document.getElementById('chart1'), chartData1);
     new Chart(document.getElementById('chart2'), chartData2);
     new Chart(document.getElementById('chart3'), chartData3);
+    new Chart(document.getElementById('chart4'), chartData4);
 
-    // Theme toggle
-    const themeToggle = document.getElementById('theme-toggle');
-    themeToggle.addEventListener('click', () => {
-      const body = document.body;
-      if (body.classList.contains('light')) {
-        // Switch to dark
-        body.classList.remove('light');
-        document.getElementById('theme-link').href = 'https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/theme/black.css';
-        themeToggle.textContent = '🌞';
-        themeToggle.setAttribute('aria-label', 'Switch to light theme');
+    // Theme toggle button logic
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    themeToggleBtn.addEventListener('click', () => {
+      document.body.classList.toggle('light');
+      if(document.body.classList.contains('light')){
+        themeToggleBtn.textContent = '🌙';
       } else {
-        // Switch to light
-        body.classList.add('light');
-        document.getElementById('theme-link').href = 'https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/theme/white.css';
-        themeToggle.textContent = '🌙';
-        themeToggle.setAttribute('aria-label', 'Switch to dark theme');
+        themeToggleBtn.textContent = '🌞';
       }
     });
   </script>

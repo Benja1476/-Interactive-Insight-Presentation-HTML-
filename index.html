@@ -1,570 +1,451 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="th">
 <head>
-  <meta charset="utf-8">
-  <title>📊 Strategic Insight Presentation</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- Reveal.js CSS -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/theme/black.css" id="theme-link">
-
-  <style>
-    /* --- Base Dark Theme --- */
-    body {
-      background-color: #121212;
-      color: #eee;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      margin: 0; padding: 0;
-      transition: background-color 0.3s, color 0.3s;
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Strategic Dashboard 4 Pages – July 2025</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600&display=swap" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+  body {
+    font-family: 'Sarabun', sans-serif;
+    margin: 0; background: #f7f9fc; color: #222;
+  }
+  header {
+    background: linear-gradient(135deg, #1e88e5, #42a5f5);
+    color: white;
+    padding: 1.5rem;
+    text-align: center;
+    font-size: 1.8rem;
+    font-weight: 600;
+    user-select: none;
+  }
+  nav {
+    display: flex;
+    justify-content: center;
+    background: white;
+    box-shadow: 0 2px 8px rgb(0 0 0 / 0.1);
+  }
+  nav button {
+    flex: 1;
+    border: none;
+    background: white;
+    padding: 1rem 0;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-weight: 600;
+    color: #1976d2;
+    border-bottom: 3px solid transparent;
+  }
+  nav button.active,
+  nav button:hover {
+    background: #e3f2fd;
+    border-bottom: 3px solid #1976d2;
+  }
+  main {
+    max-width: 1100px;
+    margin: 2rem auto 4rem;
+    background: white;
+    border-radius: 12px;
+    padding: 2rem 2.5rem;
+    box-shadow: 0 10px 24px rgba(0,0,0,0.1);
+  }
+  h2 {
+    color: #1565c0;
+    margin-bottom: 0.5rem;
+    user-select: none;
+  }
+  p.intro {
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    font-size: 1.1rem;
+    color: #333;
+  }
+  /* Chart container */
+  .chart-container {
+    width: 100%;
+    max-width: 800px;
+    margin: 1rem auto 3rem;
+  }
+  /* Table */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 1rem;
+  }
+  thead {
+    background: #1976d2;
+    color: white;
+  }
+  th, td {
+    padding: 0.8rem 1rem;
+    border: 1px solid #ddd;
+    text-align: left;
+  }
+  tbody tr:nth-child(even) {
+    background: #f9fbff;
+  }
+  /* Status pill badges */
+  .status {
+    display: inline-block;
+    padding: 4px 14px;
+    border-radius: 20px;
+    color: white;
+    font-weight: 600;
+    font-size: 0.9rem;
+    user-select: none;
+  }
+  .status.high-risk { background-color: #d32f2f; }
+  .status.medium-risk { background-color: #f9a825; }
+  .status.low-risk { background-color: #388e3c; }
+  /* Responsive */
+  @media (max-width: 768px) {
+    main {
+      padding: 1rem 1.2rem;
+      margin: 1rem;
     }
-    h1, h2 {
-      text-align: center;
-      color: #00b4b4;
-      text-shadow: 0 0 8px #00b4b4aa;
-      font-weight: 700;
-      margin-bottom: 15px;
+    table, thead, tbody, th, td, tr {
+      display: block;
     }
-    p {
-      text-align: center;
-      color: #aaa;
-      font-style: italic;
-      margin-bottom: 40px;
+    thead tr {
+      position: absolute;
+      top: -9999px; left: -9999px;
     }
-    .nav-bar {
-      text-align: center;
-      margin-bottom: 20px;
+    tbody tr {
+      margin-bottom: 1rem;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 0.8rem;
+      background: white;
     }
-    .nav-bar button {
-      margin: 0 10px;
-      padding: 10px 20px;
-      font-size: 16px;
-      border-radius: 25px;
+    tbody td {
       border: none;
-      background-color: #444;
-      color: white;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
+      padding-left: 50%;
+      position: relative;
+      text-align: right;
     }
-    .nav-bar button:hover, .nav-bar button:focus {
-      background-color: #008080;
-      outline: none;
-    }
-    .chart-container {
-      width: 500px;
-      margin: 20px auto 40px auto;
-    }
-    table {
-      width: 90%;
-      margin: 0 auto 40px auto;
-      border-collapse: collapse;
-      font-size: 16px;
-      box-shadow: 0 4px 12px rgb(0 0 0 / 0.4);
-      border-radius: 10px;
-      overflow: hidden;
-      background-color: #1c1c1c;
-      color: #eee;
-    }
-    table, th, td {
-      border: 1px solid #555;
-    }
-    th, td {
-      padding: 12px 15px;
-      text-align: center;
-    }
-    th {
-      background-color: #222;
-      color: #00b4b4;
-      font-weight: 700;
-      letter-spacing: 0.05em;
-    }
-    tbody tr:nth-child(even) {
-      background-color: #2e2e2e;
-    }
-    tbody tr:nth-child(odd) {
-      background-color: #222;
-    }
-    .status-high {
-      background-color: #ff4d4d;
-      color: #fff;
+    tbody td::before {
+      position: absolute;
+      left: 1rem;
+      width: 45%;
+      white-space: nowrap;
       font-weight: 600;
-      border-radius: 50px;
-      padding: 6px 14px;
-      display: inline-block;
-      min-width: 90px;
-      box-shadow: 0 0 8px #ff4d4daa;
-    }
-    .status-medium {
-      background-color: #ffdb4d;
-      color: #333;
-      font-weight: 600;
-      border-radius: 50px;
-      padding: 6px 14px;
-      display: inline-block;
-      min-width: 90px;
-      box-shadow: 0 0 8px #ffdb4daa;
-    }
-    .status-low {
-      background-color: #4dff88;
-      color: #222;
-      font-weight: 600;
-      border-radius: 50px;
-      padding: 6px 14px;
-      display: inline-block;
-      min-width: 90px;
-      box-shadow: 0 0 8px #4dff88aa;
-    }
-    .insight-box {
-      background-color: #222;
-      padding: 20px 30px;
-      border-radius: 20px;
-      color: #fff;
-      margin-bottom: 30px;
-      font-size: 18px;
-      max-width: 800px;
-      margin-left: auto;
-      margin-right: auto;
-      box-shadow: 0 0 20px #008080cc;
-      line-height: 1.5;
-    }
-
-    /* --- Light Theme --- */
-    body.light {
-      background-color: #fefefe;
-      color: #222;
-    }
-    body.light p {
-      color: #555;
-    }
-    body.light table {
-      background-color: #fff;
-      color: #222;
-      box-shadow: 0 4px 12px rgb(0 0 0 / 0.15);
-    }
-    body.light table, body.light th, body.light td {
-      border-color: #bbb;
-    }
-    body.light th {
-      background-color: #00b4b4;
-      color: #fff;
-      text-shadow: none;
-    }
-    body.light tbody tr:nth-child(even) {
-      background-color: #f5f9fa;
-    }
-    body.light tbody tr:nth-child(odd) {
-      background-color: #e3eef1;
-    }
-    body.light .nav-bar button {
-      background-color: #00b4b4;
-      color: #fff;
-      box-shadow: 0 0 8px #00b4b4aa;
-    }
-    body.light .nav-bar button:hover, 
-    body.light .nav-bar button:focus {
-      background-color: #007373;
-      outline: none;
-    }
-    body.light .insight-box {
-      background-color: #e3eef1;
-      color: #222;
-      box-shadow: 0 0 20px #00b4b4aa;
-    }
-    body.light .status-high {
-      background-color: #ff6b6b;
-      color: #fff;
-      box-shadow: 0 0 10px #ff6b6baa;
-    }
-    body.light .status-medium {
-      background-color: #ffe066;
-      color: #444;
-      box-shadow: 0 0 10px #ffe066aa;
-    }
-    body.light .status-low {
-      background-color: #51cf66;
-      color: #fff;
-      box-shadow: 0 0 10px #51cf66aa;
-    }
-
-    /* Theme toggle button */
-    #theme-toggle {
-      position: fixed;
-      top: 15px;
-      right: 20px;
-      background: #00b4b4;
-      color: #fff;
-      border: none;
-      padding: 10px 18px;
-      border-radius: 25px;
-      cursor: pointer;
-      font-size: 18px;
-      box-shadow: 0 0 15px #00b4b4cc;
-      z-index: 9999;
-      transition: background-color 0.3s ease;
+      text-align: left;
+      content: attr(data-label);
+      color: #1976d2;
       user-select: none;
     }
-    #theme-toggle:hover {
-      background-color: #007373;
-    }
-  </style>
+  }
+</style>
 </head>
 <body>
-  <button id="theme-toggle" aria-label="Toggle light and dark theme">🌞</button>
 
-  <div class="reveal">
-    <div class="slides">
+<header>📊 Strategic Insight Dashboard – July 2025</header>
 
-      <!-- Navigation Slide (หน้าแรก “Selection”) -->
-      <section>
-        <div class="nav-bar" role="navigation" aria-label="Presentation Navigation">
-          <button onclick="Reveal.slide(1)">📊 iStockView: Strategic Health</button>
-          <button onclick="Reveal.slide(2)">📉 iStockView: Risk & Opportunity</button>
-          <button onclick="Reveal.slide(3)">🏭 CFC Operations</button>
-          <button onclick="Reveal.slide(4)">📈 Plan vs Reality: RM Impact</button>
-        </div>
-        <h1>Selection</h1>
-        <p>Choose a slide to view detailed insights</p>
-      </section>
+<nav>
+  <button class="active" data-page="page1" aria-controls="page1" aria-selected="true">Inventory Health & Risk</button>
+  <button data-page="page2" aria-controls="page2" aria-selected="false">Production Performance</button>
+  <button data-page="page3" aria-controls="page3" aria-selected="false">RM Planning & Material</button>
+  <button data-page="page4" aria-controls="page4" aria-selected="false">Strategic Actions</button>
+</nav>
 
-      <!-- Slide 1: iStockView: Strategic Health -->
-      <section>
-        <h2>📊 iStockView: Strategic Health</h2>
-        <div class="insight-box" aria-label="Strategic Insight">
-          กลยุทธ์หลักในช่วงไตรมาสนี้คือการลดทุนจมในสินค้าคงคลัง โดยเน้น ABC-FSN-DOI Analysis<br>
-          ✅ จุดเน้น: กลุ่ม A-Fast ที่มี DOI เพิ่มขึ้นผิดปกติ
-        </div>
-        <div class="chart-container">
-          <canvas id="chart1" aria-label="DOI chart for items" role="img"></canvas>
-        </div>
-        <table>
-          <thead>
-            <tr>
-              <th>Item</th>
-              <th>DOI</th>
-              <th>Category</th>
-              <th>Recommendation</th>
-              <th>Recommend กลยุทธ์</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>RM-103</td>
-              <td>120</td>
-              <td>A-Fast</td>
-              <td>เร่งขายและไม่เติมเพิ่ม</td>
-              <td>ปรับลดปริมาณสต็อกและส่งเสริมการขายเร่งด่วน</td>
-              <td><span class="status-high" aria-label="High risk status">⚠️ High Risk</span></td>
-            </tr>
-            <tr>
-              <td>RM-088</td>
-              <td>35</td>
-              <td>B-Slow</td>
-              <td>พิจารณาปรับ reorder point</td>
-              <td>วางแผนจัดซื้อแบบ Just-in-Time</td>
-              <td><span class="status-medium" aria-label="Moderate risk status">Moderate</span></td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
+<main>
 
-      <!-- Slide 2: iStockView: Risk & Opportunity -->
-      <section>
-        <h2>📉 iStockView: Risk & Opportunity</h2>
-        <div class="insight-box" aria-label="Risk and Opportunity Insight">
-          รายการที่มี Turnover ต่ำกว่า 1 รอบ/ปี แต่มี Stock สูง → ถือเป็นทุนจมเสี่ยงสูง<br>
-          🎯 โอกาส: Convert ไปยังสินค้าทดแทนหรือแผนโปรโมชั่น
-        </div>
-        <div class="chart-container">
-          <canvas id="chart2" aria-label="Turnover chart for items" role="img"></canvas>
-        </div>
-        <table>
-          <thead>
-            <tr>
-              <th>Item</th>
-              <th>Turnover</th>
-              <th>ABC</th>
-              <th>Action Plan</th>
-              <th>Recommend กลยุทธ์</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>FG-456</td>
-              <td>0.6</td>
-              <td>C</td>
-              <td>ลดการผลิตและจัดโปรโมชั่น</td>
-              <td>ส่งเสริมโปรโมชันลดสต็อกและพัฒนาสินค้าทดแทน</td>
-              <td><span class="status-high" aria-label="Critical status">🚨 Critical</span></td>
-            </tr>
-            <tr>
-              <td>FG-789</td>
-              <td>1.1</td>
-              <td>B</td>
-              <td>เฝ้าระวังการเคลื่อนไหวตลาด</td>
-              <td>ติดตามเทรนด์ตลาดและปรับกลยุทธ์ตามสถานการณ์</td>
-              <td><span class="status-low" aria-label="Stable status">Stable</span></td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
+  <!-- Page 1 -->
+  <section id="page1" role="tabpanel" aria-hidden="false">
+    <h2>📦 Strategic Inventory Health & Risk</h2>
+    <p class="intro">สรุปภาพรวมสินค้าคงคลัง Overstock 25%, Dead Stock 14%, ทุนจมสูง 13 ล้านบาท (21%)</p>
 
-      <!-- Slide 3: CFC Operations -->
-      <section>
-        <h2>🏭 CFC Operations</h2>
-        <div class="insight-box" aria-label="Operations Insight">
-          วิเคราะห์ Productivity ต่อวัน และต้นทุนต่อ Batch ชัดเจนขึ้น<br>
-          🧩 Insight: ค่าเฉลี่ยต้นทุนต่อ Batch ลดลงในเดือน ก.ค. ถึง 18%
-        </div>
-        <div class="chart-container">
-          <canvas id="chart3" aria-label="Batch cost and yield chart" role="img"></canvas>
-        </div>
-        <table>
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>Batch</th>
-              <th>Cost</th>
-              <th>Yield</th>
-              <th>Recommend กลยุทธ์</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>2025-07-12</td>
-              <td>BT-334</td>
-              <td>15,200</td>
-              <td>91%</td>
-              <td>เพิ่มประสิทธิภาพสายการผลิตและควบคุมคุณภาพ</td>
-              <td><span class="status-low" aria-label="Efficient status">✅ Efficient</span></td>
-            </tr>
-            <tr>
-              <td>2025-07-14</td>
-              <td>BT-338</td>
-              <td>19,800</td>
-              <td>85%</td>
-              <td>วิเคราะห์สาเหตุต้นทุนสูงและปรับปรุงกระบวนการ</td>
-              <td><span class="status-medium" aria-label="Monitor status">Monitor</span></td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
-
-      <!-- Slide 4: Plan vs Reality: RM Impact -->
-      <section>
-        <h2>📈 Plan vs Reality: RM Impact</h2>
-        <div class="insight-box" aria-label="Plan vs Reality Insight">
-          สรุปผลความแตกต่างระหว่างแผนและผลจริงของวัตถุดิบ (RM)<br>
-          💡 แนะนำปรับปรุงการบริหารจัดการ RM เพื่อเพิ่มประสิทธิภาพ
-        </div>
-        <div class="chart-container">
-          <canvas id="chart4" aria-label="Plan vs Reality chart" role="img"></canvas>
-        </div>
-        <table>
-          <thead>
-            <tr>
-              <th>RM Item</th>
-              <th>Planned Qty</th>
-              <th>Actual Qty</th>
-              <th>Variance</th>
-              <th>Recommendation</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>RM-101</td>
-              <td>1000</td>
-              <td>850</td>
-              <td>-150</td>
-              <td>ตรวจสอบขั้นตอนรับเข้า</td>
-              <td><span class="status-medium" aria-label="Warning status">⚠️ Warning</span></td>
-            </tr>
-            <tr>
-              <td>RM-205</td>
-              <td>2000</td>
-              <td>2100</td>
-              <td>+100</td>
-              <td>ปรับปรุงการจัดเก็บสินค้า</td>
-              <td><span class="status-low" aria-label="Good status">✅ Good</span></td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
-
+    <div class="chart-container">
+      <canvas id="chartInventory"></canvas>
     </div>
-  </div>
 
-  <!-- Reveal.js -->
-  <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.min.js"></script>
-  <script>
-    Reveal.initialize({
-      hash: true,
-      slideNumber: true,
-      navigationMode: 'linear'
+    <table>
+      <thead>
+        <tr>
+          <th>Status</th>
+          <th>ประเด็น</th>
+          <th>Action Plan Recommend</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td data-label="Status"><span class="status high-risk">High Risk</span></td>
+          <td data-label="ประเด็น">39% SKU เป็น Overstock & Dead Stock</td>
+          <td data-label="Action Plan Recommend">หยุดสั่ง/ระบายของเก่า 304 SKUs, ชะลอการสั่งซื้อ 146 SKUs</td>
+        </tr>
+        <tr>
+          <td data-label="Status"><span class="status medium-risk">Medium Risk</span></td>
+          <td data-label="ประเด็น">9% SKU ไม่มีการใช้งาน > 6 เดือน (Aging)</td>
+          <td data-label="Action Plan Recommend">เร่งวิเคราะห์ SKU Aging และจัดแคมเปญเคลียร์สต็อก</td>
+        </tr>
+        <tr>
+          <td data-label="Status"><span class="status high-risk">High Risk</span></td>
+          <td data-label="ประเด็น">ทุนจมสูงสุดคลัง CFC (22.1%) และ CEW (20.3%)</td>
+          <td data-label="Action Plan Recommend">กำหนดแผน Clear Stock / Promotion รายคลัง</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Page 2 -->
+  <section id="page2" role="tabpanel" aria-hidden="true" hidden>
+    <h2>🏭 Production Performance & Quality</h2>
+    <p class="intro">กำลังผลิตเดือน ก.ค. 5,133 ตัน, Yield 99.77%, Rework 11,998 Kg และ First Pass Rate 97.13%</p>
+
+    <div class="chart-container">
+      <canvas id="chartProduction"></canvas>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Status</th>
+          <th>ประเด็น</th>
+          <th>Action Plan Recommend</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td data-label="Status"><span class="status medium-risk">Medium Risk</span></td>
+          <td data-label="ประเด็น">Rework สูงถึง 11,998 Kg ในเดือน ก.ค.</td>
+          <td data-label="Action Plan Recommend">ตั้ง KPI Rework &lt; 0.1%, วิเคราะห์สาเหตุ Root Cause 5 Why</td>
+        </tr>
+        <tr>
+          <td data-label="Status"><span class="status low-risk">Low Risk</span></td>
+          <td data-label="ประเด็น">Yield เฉลี่ยสูง 99.77%</td>
+          <td data-label="Action Plan Recommend">รักษามาตรฐานและติดตามประสิทธิภาพเครื่องจักร</td>
+        </tr>
+        <tr>
+          <td data-label="Status"><span class="status medium-risk">Medium Risk</span></td>
+          <td data-label="ประเด็น">Resin Flooring บางเดือนต่ำกว่าเป้า &lt;85%</td>
+          <td data-label="Action Plan Recommend">ปรับปรุง Batch Planning ลด Rework และ Loss</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Page 3 -->
+  <section id="page3" role="tabpanel" aria-hidden="true" hidden>
+    <h2>📊 RM Planning & Material Management</h2>
+    <p class="intro">Stock วัตถุดิบติดลบหลาย SKU เกิดจากการอัปเดตโอนสินค้าเข้าระบบล่าช้า ไม่ใช่ขาดจริง</p>
+
+    <div class="chart-container">
+      <canvas id="chartRMPlanning"></canvas>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Status</th>
+          <th>ประเด็น</th>
+          <th>Action Plan Recommend</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td data-label="Status"><span class="status medium-risk">Medium Risk</span></td>
+          <td data-label="ประเด็น">Material Supply Days ต่ำ กลุ่ม PK เหลือ 1.29 วัน เสี่ยงหมดเร็ว</td>
+          <td data-label="Action Plan Recommend">แยก Alert “Pending Transfer” ออกจาก “Stock Out”</td>
+        </tr>
+        <tr>
+          <td data-label="Status"><span class="status medium-risk">Medium Risk</span></td>
+          <td data-label="ประเด็น">Material Availability เดือน ก.ค. 94.74% ลดลงจากเดือนก่อนหน้า</td>
+          <td data-label="Action Plan Recommend">เชื่อมข้อมูล PO/GR/Stock Movement Real-Time</td>
+        </tr>
+        <tr>
+          <td data-label="Status"><span class="status high-risk">High Risk</span></td>
+          <td data-label="ประเด็น">ปัญหา Batch เปิดไม่พอ และ Stock Update Delay จากเอกสาร PO</td>
+          <td data-label="Action Plan Recommend">ปรับระบบ Batch Planning และเร่งปรับปรุง Stock Update</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Page 4 -->
+  <section id="page4" role="tabpanel" aria-hidden="true" hidden>
+    <h2>🚀 Strategic Actions & Recommendations</h2>
+    <p class="intro">รวมข้อเสนอแนะเชิงกลยุทธ์เพื่อปรับปรุงการจัดการ Inventory, Production และ Material Planning</p>
+
+    <div class="chart-container">
+      <canvas id="chartStrategicActions"></canvas>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Status</th>
+          <th>ข้อเสนอแนะ</th>
+          <th>Action Plan Recommend</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td data-label="Status"><span class="status high-risk">High Risk</span></td>
+          <td data-label="ข้อเสนอแนะ">เคลียร์ Dead Stock ทุนจม > 13 ล้านบาท ภายใน Q4/2025</td>
+          <td data-label="Action Plan Recommend">ทดลอง Donate / Dispose / Promotion เพื่อระบายสต็อก</td>
+        </tr>
+        <tr>
+          <td data-label="Status"><span class="status medium-risk">Medium Risk</span></td>
+          <td data-label="ข้อเสนอแนะ">ปรับปรุง Batch Planning ลด Rework และ Loss</td>
+          <td data-label="Action Plan Recommend">พัฒนาระบบ Dynamic Batch Planning และ Backflush Material</td>
+        </tr>
+        <tr>
+          <td data-label="Status"><span class="status medium-risk">Medium Risk</span></td>
+          <td data-label="ข้อเสนอแนะ">เชื่อมระบบจัดซื้อ-ผลิต-คลัง ให้ Sync ข้อมูล Real-Time</td>
+          <td data-label="Action Plan Recommend">เชื่อม API PO, GR, Stock Movement และ WO แบบอัตโนมัติ</td>
+        </tr>
+        <tr>
+          <td data-label="Status"><span class="status low-risk">Low Risk</span></td>
+          <td data-label="ข้อเสนอแนะ">ตั้ง KPI ควบคุม Rework &lt; 0.1%</td>
+          <td data-label="Action Plan Recommend">วิเคราะห์ Root Cause Reprocess และแก้ไขด้วย 5 Why</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+</main>
+
+<script>
+  // Tab navigation logic
+  const navButtons = document.querySelectorAll('nav button');
+  const sections = document.querySelectorAll('main section');
+
+  navButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      // Remove active class & aria-selected
+      navButtons.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      // Hide all sections
+      sections.forEach(s => {
+        s.hidden = true;
+        s.setAttribute('aria-hidden', 'true');
+      });
+
+      // Show selected section
+      btn.classList.add('active');
+      btn.setAttribute('aria-selected', 'true');
+      const page = btn.getAttribute('data-page');
+      const section = document.getElementById(page);
+      section.hidden = false;
+      section.setAttribute('aria-hidden', 'false');
     });
-  </script>
+  });
 
-  <!-- Chart.js -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script>
-    // Chart 1: DOI
-    const chartData1 = {
-      type: 'bar',
-      data: {
-        labels: ['RM-103', 'RM-088'],
-        datasets: [{
-          label: 'DOI',
-          data: [120, 35],
-          backgroundColor: ['#ff4d4d', '#ffdb4d']
-        }]
-      },
-      options: {
-        responsive: true,
-        plugins: { legend: { display: false } },
-        scales: {
-          y: { beginAtZero: true, title: { display: true, text: 'Days' } }
+  // Chart.js data & config
+  const ctxInventory = document.getElementById('chartInventory').getContext('2d');
+  const chartInventory = new Chart(ctxInventory, {
+    type: 'doughnut',
+    data: {
+      labels: ['Overstock (25%)', 'Dead Stock (14%)', 'Others (61%)'],
+      datasets: [{
+        data: [25,14,61],
+        backgroundColor: ['#d32f2f','#f9a825','#388e3c'],
+        hoverOffset: 30
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { position: 'bottom' },
+        title: {
+          display: true,
+          text: 'Inventory Composition July 2025'
         }
       }
-    };
+    }
+  });
 
-    // Chart 2: Turnover
-    const chartData2 = {
-      type: 'bar',
-      data: {
-        labels: ['FG-456', 'FG-789'],
-        datasets: [{
-          label: 'Turnover',
-          data: [0.6, 1.1],
-          backgroundColor: ['#ff4d4d', '#4dff88']
-        }]
+  const ctxProduction = document.getElementById('chartProduction').getContext('2d');
+  const chartProduction = new Chart(ctxProduction, {
+    type: 'bar',
+    data: {
+      labels: ['Yield %', 'First Pass Rate %', 'Rework (Kg)'],
+      datasets: [{
+        label: 'Production KPIs',
+        data: [99.77, 97.13, 11998],
+        backgroundColor: ['#388e3c','#1976d2','#d32f2f']
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        y: { beginAtZero: true }
       },
-      options: {
-        responsive: true,
-        plugins: { legend: { display: false } },
-        scales: {
-          y: { beginAtZero: true, title: { display: true, text: 'Turnover (times/year)' } }
-        }
+      plugins: {
+        legend: { display: false },
+        title: { display: true, text: 'Production KPIs July 2025' }
       }
-    };
+    }
+  });
 
-    // Chart 3: Cost & Yield
-    const chartData3 = {
-      type: 'bar',
-      data: {
-        labels: ['BT-334', 'BT-338'],
-        datasets: [
-          {
-            label: 'Cost (THB)',
-            data: [15200, 19800],
-            backgroundColor: '#00b4b4',
-            yAxisID: 'y1',
-          },
-          {
-            label: 'Yield (%)',
-            data: [91, 85],
-            type: 'line',
-            borderColor: '#ffdb4d',
-            backgroundColor: '#ffdb4d',
-            yAxisID: 'y2',
-            tension: 0.3,
-            fill: false,
-            pointRadius: 5,
-            pointHoverRadius: 7,
-          }
-        ]
+  const ctxRMPlanning = document.getElementById('chartRMPlanning').getContext('2d');
+  const chartRMPlanning = new Chart(ctxRMPlanning, {
+    type: 'line',
+    data: {
+      labels: ['May', 'June', 'July'],
+      datasets: [
+        {
+          label: 'Material Availability %',
+          data: [96.5, 95.2, 94.74],
+          borderColor: '#1976d2',
+          fill: false,
+          tension: 0.3
+        },
+        {
+          label: 'Material Supply Days',
+          data: [3.5, 2.8, 1.29],
+          borderColor: '#f9a825',
+          fill: false,
+          tension: 0.3
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { position: 'bottom' },
+        title: { display: true, text: 'RM Planning & Supply Trends' }
       },
-      options: {
-        responsive: true,
-        plugins: { legend: { position: 'top' } },
-        scales: {
-          y1: {
-            type: 'linear',
-            position: 'left',
-            beginAtZero: true,
-            title: { display: true, text: 'Cost (THB)' }
-          },
-          y2: {
-            type: 'linear',
-            position: 'right',
-            beginAtZero: false,
-            title: { display: true, text: 'Yield (%)' },
-            grid: { drawOnChartArea: false }
-          }
-        }
+      scales: {
+        y: { beginAtZero: true }
       }
-    };
+    }
+  });
 
-    // Chart 4: Plan vs Reality
-    const chartData4 = {
-      type: 'bar',
-      data: {
-        labels: ['RM-101', 'RM-205'],
-        datasets: [
-          {
-            label: 'Planned Qty',
-            data: [1000, 2000],
-            backgroundColor: '#00b4b4',
-            yAxisID: 'y',
-          },
-          {
-            label: 'Actual Qty',
-            data: [850, 2100],
-            backgroundColor: '#ff4d4d',
-            yAxisID: 'y',
-          },
-          {
-            label: 'Variance',
-            data: [-150, 100],
-            type: 'line',
-            borderColor: '#ffdb4d',
-            backgroundColor: '#ffdb4d',
-            yAxisID: 'y2',
-            fill: false,
-            tension: 0.3,
-            pointRadius: 5,
-            pointHoverRadius: 7,
-          }
-        ]
+  const ctxStrategic = document.getElementById('chartStrategicActions').getContext('2d');
+  const chartStrategicActions = new Chart(ctxStrategic, {
+    type: 'radar',
+    data: {
+      labels: ['Dead Stock Clearance', 'Batch Planning', 'System Sync', 'Rework KPI'],
+      datasets: [{
+        label: 'Action Plan Progress',
+        data: [70, 55, 80, 65],
+        backgroundColor: 'rgba(25, 118, 210, 0.4)',
+        borderColor: '#1976d2',
+        pointBackgroundColor: '#1976d2',
+        fill: true
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        r: {
+          angleLines: { display: true },
+          suggestedMin: 0,
+          suggestedMax: 100
+        }
       },
-      options: {
-        responsive: true,
-        plugins: { legend: { position: 'top' } },
-        scales: {
-          y: {
-            type: 'linear',
-            position: 'left',
-            beginAtZero: true,
-            title: { display: true, text: 'Quantity' },
-          },
-          y2: {
-            type: 'linear',
-            position: 'right',
-            beginAtZero: false,
-            title: { display: true, text: 'Variance' },
-            grid: { drawOnChartArea: false },
-          }
-        }
+      plugins: {
+        legend: { display: false },
+        title: { display: true, text: 'Strategic Action Plan Progress (%)' }
       }
-    };
+    }
+  });
+</script>
 
-    new Chart(document.getElementById('chart1'), chartData1);
-    new Chart(document.getElementById('chart2'), chartData2);
-    new Chart(document.getElementById('chart3'), chartData3);
-    new Chart(document.getElementById('chart4'), chartData4);
-
-    // Theme toggle button logic
-    const themeToggleBtn = document.getElementById('theme-toggle');
-    themeToggleBtn.addEventListener('click', () => {
-      document.body.classList.toggle('light');
-      if(document.body.classList.contains('light')){
-        themeToggleBtn.textContent = '🌙';
-      } else {
-        themeToggleBtn.textContent = '🌞';
-      }
-    });
-  </script>
 </body>
 </html>
